@@ -4,16 +4,26 @@ github.com/armon/go-radix
 github.com/bgentry/speakeasy
 # github.com/fatih/color v1.7.0
 github.com/fatih/color
+# github.com/go-yaml/yaml v2.1.0+incompatible
+github.com/go-yaml/yaml
 # github.com/hashicorp/errwrap v1.0.0
 github.com/hashicorp/errwrap
 # github.com/hashicorp/go-multierror v1.0.0
 github.com/hashicorp/go-multierror
+# github.com/kelseyhightower/envconfig v1.3.0
+github.com/kelseyhightower/envconfig
 # github.com/mattn/go-colorable v0.0.9
 github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.3
 github.com/mattn/go-isatty
 # github.com/mitchellh/cli v1.0.0
 github.com/mitchellh/cli
+# github.com/okta/okta-sdk-golang v1.0.1
+github.com/okta/okta-sdk-golang/okta
+github.com/okta/okta-sdk-golang/okta/cache
+github.com/okta/okta-sdk-golang/okta/query
+# github.com/patrickmn/go-cache v0.0.0-20180815053127-5633e0862627
+github.com/patrickmn/go-cache
 # github.com/posener/complete v1.1.1
 github.com/posener/complete
 github.com/posener/complete/cmd
