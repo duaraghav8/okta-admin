@@ -1,3 +1,6 @@
 package main
 
-const Version = "1.0.0"
+const (
+	AppName = "okta-admin"
+	Version = "1.0.0"
+)

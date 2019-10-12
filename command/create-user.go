@@ -61,10 +61,12 @@ func (c *CreateUserCommand) ParseArgs(args []string) (*CreateUserCommandConfig, 
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	return &cfg, common.RequiredArgs(
-		cfg.EmailID, cfg.Team,
-		c.Meta.GlobalOptions.Domain, c.Meta.GlobalOptions.ApiToken,
-	)
+	return &cfg, common.RequiredArgs(map[string]string{
+		"email": cfg.EmailID,
+		"team": cfg.Team,
+		"domain": c.Meta.GlobalOptions.Domain,
+		"api token": c.Meta.GlobalOptions.ApiToken,
+	})
 }
 
 func (c *CreateUserCommand) Run(args []string) int {

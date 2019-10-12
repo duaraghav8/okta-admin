@@ -11,10 +11,10 @@ import (
 // error upon encountering the first empty argument.
 // This function ensures that all specified arguments are
 // non-empty.
-func RequiredArgs(args ...string) error {
-	for _, arg := range args {
-		if arg == "" {
-			return errors.New(fmt.Sprintf("%s is a required argument", arg))
+func RequiredArgs(args map[string]string) error {
+	for k, v := range args {
+		if v == "" {
+			return errors.New(fmt.Sprintf("%s is a required argument", k))
 		}
 	}
 	return nil
