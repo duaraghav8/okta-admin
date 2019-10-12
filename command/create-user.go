@@ -64,7 +64,7 @@ func (c *CreateUserCommand) ParseArgs(args []string) (*CreateUserCommandConfig, 
 	return &cfg, common.RequiredArgs(map[string]string{
 		"email": cfg.EmailID,
 		"team": cfg.Team,
-		"domain": c.Meta.GlobalOptions.Domain,
+		"org url": c.Meta.GlobalOptions.OrgUrl,
 		"api token": c.Meta.GlobalOptions.ApiToken,
 	})
 }
@@ -78,7 +78,7 @@ func (c *CreateUserCommand) Run(args []string) int {
 
 	client, err := okta.NewClient(
 		context.Background(),
-		okta.WithOrgUrl(c.Meta.GlobalOptions.Domain),
+		okta.WithOrgUrl(c.Meta.GlobalOptions.OrgUrl),
 		okta.WithToken(c.Meta.GlobalOptions.ApiToken),
 	)
 	if err != nil {

@@ -17,7 +17,7 @@ func createMeta(args []string) (*common.CommandMetadata, error) {
 	)
 	flags := flag.NewFlagSet("global", flag.ContinueOnError)
 
-	flags.StringVar(&globalOpts.Domain, "domain", os.Getenv("OKTA_DOMAIN"), "")
+	flags.StringVar(&globalOpts.OrgUrl, "org-url", os.Getenv("OKTA_ORG_URL"), "")
 	flags.StringVar(&globalOpts.ApiToken, "api-token", os.Getenv("OKTA_API_TOKEN"), "")
 
 	meta = common.CommandMetadata{
@@ -25,9 +25,8 @@ func createMeta(args []string) (*common.CommandMetadata, error) {
 		GlobalOptions: &globalOpts,
 		GlobalOptionsHelpText: `
 Global Options:
-  -domain    Okta organization domain URL
-             An example of this is https://foobar.okta.com/
-             This can also be specified via the OKTA_DOMAIN environment variable.
+  -org-url   Okta organization URL
+             This can also be specified via the OKTA_ORG_URL environment variable.
   -api-token Token to authenticate with Okta API
              This can also be specified via the OKTA_API_TOKEN environment variable.
 `,

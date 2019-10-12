@@ -6,7 +6,7 @@ import "flag"
 // to all actions. It is used to pass down global
 // configuration.
 type CommandConfig struct {
-	Domain, ApiToken string
+	OrgUrl, ApiToken string
 }
 
 // CommandMetadata is used to pass metadata to all actions.
