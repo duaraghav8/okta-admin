@@ -9,12 +9,20 @@ import (
 )
 
 func main() {
+	meta, err := createMeta(os.Args[2:])
+	if err != nil {
+		fmt.Printf("Failed to create metadata for actions: %v\n", err)
+		os.Exit(1)
+	}
+
 	c := cli.CLI{
 		Name:    "okta-admin",
-		Version: "1.0.0",
+		Version: Version,
 		Commands: map[string]cli.CommandFactory{
 			"create-user": func() (command cli.Command, err error) {
-				return &cmd.CreateUserCommand{}, nil
+				return &cmd.CreateUserCommand{
+					Meta: meta,
+				}, nil
 			},
 			"reset-user-password": func() (command cli.Command, err error) {
 				return &cmd.ResetUserPasswordCommand{}, nil

@@ -2,19 +2,20 @@ package command
 
 import (
 	"context"
-	"flag"
 	"fmt"
+	"github.com/duaraghav8/okta-admin/common"
 	"github.com/okta/okta-sdk-golang/okta"
 	"github.com/okta/okta-sdk-golang/okta/query"
-	"strings"
 )
 
-type CreateUserCommand struct{}
+type CreateUserCommand struct {
+	Meta *common.CommandMetadata
+}
 
 type CreateUserCommandConfig struct {
-	Team                         string
-	Domain, ApiToken             string
-	FirstName, LastName, EmailID string
+	EmailID             string
+	Team                string
+	FirstName, LastName string
 }
 
 func (c *CreateUserCommand) Synopsis() string {
@@ -27,26 +28,31 @@ Usage: okta-admin create-user [options]
 
   Invites a new user to the Organization.
   Okta sends out an invite to the specified Email ID.
-
+{{.GlobalOptionsHelpText}}
 Options:
 
-  -domain    Okta organization domain (eg- https://foo.okta.com/)
-  -api-token Token to authenticate with Okta API
-  -email     Email ID of the user to invite
-  -fname     First name of the user to invite (Default: Default)
-  -lname     Last name of the user to invite (Default: User)
-  -team      The team in the organization the user is part of
+  -email Email ID of the user to invite
+  -fname First name of the user to invite (Default: Default)
+  -lname Last name of the user to invite (Default: User)
+  -team  The team in the organization the user should be part of
 `
 
-	return strings.TrimSpace(helpText)
+	res, err := common.PrepareMessage(
+		helpText,
+		map[string]interface{}{
+			"GlobalOptionsHelpText": c.Meta.GlobalOptionsHelpText,
+		},
+	)
+	if err != nil {
+		return fmt.Sprintf("Failed to render help message: %v\n", err)
+	}
+	return res
 }
 
 func (c *CreateUserCommand) ParseArgs(args []string) (*CreateUserCommandConfig, error) {
 	var cfg CreateUserCommandConfig
-	flags := flag.NewFlagSet("create-user", flag.ContinueOnError)
+	flags := c.Meta.FlagSet
 
-	flags.StringVar(&cfg.Domain, "domain", "", "")
-	flags.StringVar(&cfg.ApiToken, "api-token", "", "")
 	flags.StringVar(&cfg.EmailID, "email", "", "")
 	flags.StringVar(&cfg.Team, "team", "", "")
 	flags.StringVar(&cfg.FirstName, "fname", "Default", "")
@@ -55,7 +61,10 @@ func (c *CreateUserCommand) ParseArgs(args []string) (*CreateUserCommandConfig, 
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	return &cfg, requiredArgs(cfg.Domain, cfg.ApiToken, cfg.EmailID, cfg.Team)
+	return &cfg, common.RequiredArgs(
+		cfg.EmailID, cfg.Team,
+		c.Meta.GlobalOptions.Domain, c.Meta.GlobalOptions.ApiToken,
+	)
 }
 
 func (c *CreateUserCommand) Run(args []string) int {
@@ -65,7 +74,11 @@ func (c *CreateUserCommand) Run(args []string) int {
 		return 1
 	}
 
-	client, err := okta.NewClient(context.Background(), okta.WithOrgUrl(cfg.Domain), okta.WithToken(cfg.ApiToken))
+	client, err := okta.NewClient(
+		context.Background(),
+		okta.WithOrgUrl(c.Meta.GlobalOptions.Domain),
+		okta.WithToken(c.Meta.GlobalOptions.ApiToken),
+	)
 	if err != nil {
 		fmt.Printf("Failed to initialize Okta client: %v\n", err)
 		return 1
