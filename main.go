@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	meta, err := createMeta(os.Args[1:])
+	meta, err := createMeta()
 	if err != nil {
 		fmt.Printf("Failed to create metadata for actions: %v\n", err)
 		os.Exit(1)

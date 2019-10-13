@@ -10,7 +10,7 @@ import (
 // all actions. None of the global options are treated as
 // required. Checking for emptiness of an option and
 // further validations are therefore the user's responsibility.
-func createMeta(args []string) (*common.CommandMetadata, error) {
+func createMeta() (*common.CommandMetadata, error) {
 	var (
 		meta       common.CommandMetadata
 		globalOpts common.CommandConfig
