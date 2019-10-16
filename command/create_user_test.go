@@ -47,15 +47,15 @@ func TestCreateUserCommand_ParseArgs(t *testing.T) {
 	}
 
 	if cfg.FirstName != args[1] {
-		t.Errorf("Expected first name to be %s, received %s", args[1], cfg.Team)
+		t.Errorf("Expected first name to be %s, received %s", args[1], cfg.FirstName)
 	}
 	if cfg.LastName != args[3] {
-		t.Errorf("Expected last name to be %s, received %s", args[1], cfg.Team)
+		t.Errorf("Expected last name to be %s, received %s", args[1], cfg.LastName)
 	}
 	if cfg.Team != args[5] {
 		t.Errorf("Expected team to be %s, received %s", args[1], cfg.Team)
 	}
 	if cfg.EmailID != args[7] {
-		t.Errorf("Expected email id to be %s, received %s", args[1], cfg.Team)
+		t.Errorf("Expected email id to be %s, received %s", args[1], cfg.EmailID)
 	}
 }
