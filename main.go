@@ -25,7 +25,9 @@ func main() {
 				}, nil
 			},
 			"reset-user-password": func() (command cli.Command, err error) {
-				return &cmd.ResetUserPasswordCommand{}, nil
+				return &cmd.ResetUserPasswordCommand{
+					Meta: meta,
+				}, nil
 			},
 			"deactivate-user": func() (command cli.Command, err error) {
 				return &cmd.DeactivateUserCommand{
