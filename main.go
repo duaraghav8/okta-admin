@@ -40,8 +40,10 @@ func main() {
 			"assign-applications": func() (command cli.Command, err error) {
 				return &cmd.AssignApplicationsCommand{}, nil
 			},
-			"reset-user-multifactor": func() (command cli.Command, err error) {
-				return &cmd.ResetUserMultifactorCommand{}, nil
+			"reset-user-mfa": func() (command cli.Command, err error) {
+				return &cmd.ResetUserMultifactorsCommand{
+					Meta: meta,
+				}, nil
 			},
 		},
 		Args: os.Args[1:],
