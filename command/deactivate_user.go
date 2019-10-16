@@ -6,6 +6,7 @@ import (
 	"github.com/duaraghav8/okta-admin/common"
 	oktaapi "github.com/duaraghav8/okta-admin/okta"
 	"github.com/okta/okta-sdk-golang/okta"
+	"net/http"
 )
 
 type DeactivateUserCommand struct {
@@ -91,9 +92,13 @@ func (c *DeactivateUserCommand) Run(args []string) int {
 	}
 
 	// Deactivate user
-	_, err = client.User.DeactivateUser(user["id"].(string), nil)
+	resp, err := client.User.DeactivateUser(user["id"].(string), nil)
 	if err != nil {
 		fmt.Printf("Failed to deactivate member: %v\n", err)
+		return 1
+	}
+	if resp.StatusCode != http.StatusOK {
+		fmt.Printf("Failed to deactivate member: %v\n", resp)
 		return 1
 	}
 
