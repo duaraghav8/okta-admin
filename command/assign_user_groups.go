@@ -27,7 +27,7 @@ func (c *AssignUserGroupsCommand) Synopsis() string {
 
 func (c *AssignUserGroupsCommand) Help() string {
 	helpText := `
-Usage: okta-admin deactivate-user [options]
+Usage: okta-admin assign-groups [options]
 
   Adds an organization member to one or more groups.
   This assumes that the specified group(s) already exist
@@ -153,7 +153,7 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 		if added.Err != nil {
 			fmt.Printf("Failed to add user to %s: %v\n", added.GroupName, added.Err)
 		} else if added.Resp.StatusCode != http.StatusNoContent {
-			fmt.Printf("Failed to add user to %s: %v\n", added.GroupName, added.Resp.Status)
+			fmt.Printf("Failed to add user to %s: %s\n", added.GroupName, added.Resp.Status)
 		} else {
 			fmt.Printf("Added to %s\n", added.GroupName)
 		}

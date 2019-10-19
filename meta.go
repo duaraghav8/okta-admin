@@ -15,7 +15,7 @@ func createMeta() (*common.CommandMetadata, error) {
 		meta       common.CommandMetadata
 		globalOpts common.CommandConfig
 	)
-	flags := flag.NewFlagSet("global", flag.ContinueOnError)
+	flags := flag.NewFlagSet("global options", flag.ContinueOnError)
 
 	flags.StringVar(&globalOpts.OrgUrl, "org-url", os.Getenv("OKTA_ORG_URL"), "")
 	flags.StringVar(&globalOpts.ApiToken, "api-token", os.Getenv("OKTA_API_TOKEN"), "")

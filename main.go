@@ -44,8 +44,10 @@ func main() {
 					Meta: meta,
 				}, nil
 			},
-			"assign-apps": func() (command cli.Command, err error) {
-				return &cmd.AssignApplicationsCommand{}, nil
+			"list-groups": func() (command cli.Command, err error) {
+				return &cmd.ListGroupsCommand{
+					Meta: meta,
+				}, nil
 			},
 		},
 		Args: os.Args[1:],

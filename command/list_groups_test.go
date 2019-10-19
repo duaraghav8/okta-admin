@@ -7,45 +7,43 @@ import (
 	"testing"
 )
 
-func createTestAssignUserGroupsCommand(globalOptsHelpText string) *AssignUserGroupsCommand {
+func createTestListGroupsCommand(globalOptsHelpText string) *ListGroupsCommand {
 	m := &common.CommandMetadata{
 		GlobalOptionsHelpText: globalOptsHelpText,
 		GlobalOptions: &common.CommandConfig{
 			OrgUrl:   "https://foo.okta.com/",
 			ApiToken: "123abc",
 		},
-		FlagSet: flag.NewFlagSet("test_assign_user_groups_cmd", flag.ContinueOnError),
+		FlagSet: flag.NewFlagSet("test_list_groups_cmd", flag.ContinueOnError),
 	}
-	return &AssignUserGroupsCommand{Meta: m}
+	return &ListGroupsCommand{Meta: m}
 }
 
-func TestAssignUserGroupsCommand_Help(t *testing.T) {
+func TestListGroupsCommand_Help(t *testing.T) {
 	t.Parallel()
 	const globalHelpMsg = `
 Welcome to Hogwarts!
 `
-	c := createTestAssignUserGroupsCommand(globalHelpMsg)
+	c := createTestListGroupsCommand(globalHelpMsg)
 	if !strings.Contains(c.Help(), globalHelpMsg) {
 		t.Errorf("Expected final help message to contain \"%s\"", globalHelpMsg)
 	}
 }
 
-func TestAssignUserGroupsCommand_ParseArgs(t *testing.T) {
+func TestListGroupsCommand_ParseArgs(t *testing.T) {
 	t.Run("without groups", func(t *testing.T) {
 		t.Parallel()
 
-		c := createTestAssignUserGroupsCommand("")
-		args := []string{
-			"-email", "harry.potter@hogwarts.co.uk",
-		}
+		c := createTestListGroupsCommand("")
+		args := []string{"-detailed"}
 
 		cfg, err := c.ParseArgs(args)
 		if err != nil {
 			t.Fatalf("Failed to parse arguments: %v", err)
 		}
 
-		if cfg.EmailID != args[1] {
-			t.Errorf("Expected email id to be %s, received %s", args[1], cfg.EmailID)
+		if !cfg.Detailed {
+			t.Errorf("Expected -detailed flag to be set")
 		}
 		if len(cfg.GroupNames) != 0 {
 			t.Errorf("Expected group names slice to be empty, received %v", cfg.GroupNames)
@@ -56,15 +54,18 @@ func TestAssignUserGroupsCommand_ParseArgs(t *testing.T) {
 		t.Parallel()
 
 		var groups = []string{"Tech", "office_staff", "Marketing", "talent-acquisition"}
-		c := createTestAssignUserGroupsCommand("")
+		c := createTestListGroupsCommand("")
 		args := []string{
-			"-email", "harry.potter@hogwarts.co.uk",
 			"-groups", "Tech\t,    office_staff  ,\t\tMarketing  ,  talent-acquisition",
 		}
 
 		cfg, err := c.ParseArgs(args)
 		if err != nil {
 			t.Fatalf("Failed to parse arguments: %v", err)
+		}
+
+		if cfg.Detailed {
+			t.Errorf("Expected -detailed flag to be unset")
 		}
 		if len(cfg.GroupNames) != len(groups) {
 			t.Fatalf("Expected %d group names, received %d", len(groups), len(cfg.GroupNames))
