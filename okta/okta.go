@@ -5,9 +5,18 @@ package okta
 import (
 	"errors"
 	"fmt"
+	"github.com/okta/okta-sdk-golang/okta"
 	"net/url"
 	"path"
 )
+
+// GenericResult represents a struct that can hold results
+// returned by any okta sdk function that passes response
+// from the upstream API.
+type GenericResult struct {
+	Err  error
+	Resp *okta.Response
+}
 
 // Credentials contains all information required to authenticate
 // to and access an Okta domain.
@@ -34,8 +43,8 @@ func CreateRequestUrl(orgUrl, endpoint string) (string, error) {
 // REST API.
 func CreateRequestHeaders(apiToken string) map[string]string {
 	return map[string]string{
-		"Accept": "application/json",
-		"Content-Type": "application/json",
+		"Accept":        "application/json",
+		"Content-Type":  "application/json",
 		"Authorization": fmt.Sprintf("SSWS %s", apiToken),
 	}
 }

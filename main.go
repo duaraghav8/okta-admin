@@ -34,16 +34,18 @@ func main() {
 					Meta: meta,
 				}, nil
 			},
-			"list-user-accesses": func() (command cli.Command, err error) {
-				return &cmd.ListUserAccessesCommand{}, nil
-			},
-			"assign-applications": func() (command cli.Command, err error) {
-				return &cmd.AssignApplicationsCommand{}, nil
-			},
 			"reset-user-mfa": func() (command cli.Command, err error) {
 				return &cmd.ResetUserMultifactorsCommand{
 					Meta: meta,
 				}, nil
+			},
+			"assign-groups": func() (command cli.Command, err error) {
+				return &cmd.AssignUserGroupsCommand{
+					Meta: meta,
+				}, nil
+			},
+			"assign-apps": func() (command cli.Command, err error) {
+				return &cmd.AssignApplicationsCommand{}, nil
 			},
 		},
 		Args: os.Args[1:],
