@@ -1,17 +1,20 @@
 package command
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"fmt"
 	"github.com/duaraghav8/okta-admin/common"
+	"github.com/okta/okta-sdk-golang/okta"
 	"log"
 )
 
 // Command contains objects passed to all CLI commands
 type Command struct {
-	Meta   *Metadata
-	Logger *log.Logger
+	oktaClient *okta.Client
+	Meta       *Metadata
+	Logger     *log.Logger
 }
 
 // Config contains options that are made available
@@ -28,6 +31,31 @@ type Metadata struct {
 	FlagSet               *flag.FlagSet
 	GlobalOptions         *Config
 	GlobalOptionsHelpText string
+}
+
+// OktaClient returns an instance of Okta Client initialized
+// with organization-specific API credentials. This method
+// only creates the client the first time it is called.
+// Subsequent calls return the cached client.
+func (c *Command) OktaClient() (*okta.Client, error) {
+	if c.oktaClient != nil {
+		return c.oktaClient, nil
+	}
+
+	if c.Meta.GlobalOptions.OrgUrl == "" {
+		return nil, errors.New("org URL cannot be empty")
+	}
+	if c.Meta.GlobalOptions.ApiToken == "" {
+		return nil, errors.New("api token cannot be empty")
+	}
+
+	client, err := okta.NewClient(context.Background(),
+		okta.WithOrgUrl(c.Meta.GlobalOptions.OrgUrl), okta.WithToken(c.Meta.GlobalOptions.ApiToken))
+	if err != nil {
+		// Cache the newly created client
+		c.oktaClient = client
+	}
+	return client, err
 }
 
 // requiredArgs takes a series of arguments and returns an

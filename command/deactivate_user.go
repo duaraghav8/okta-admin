@@ -1,9 +1,7 @@
 package command
 
 import (
-	"context"
 	oktaapi "github.com/duaraghav8/okta-admin/okta"
-	"github.com/okta/okta-sdk-golang/okta"
 	"net/http"
 )
 
@@ -62,11 +60,7 @@ func (c *DeactivateUserCommand) Run(args []string) int {
 		return 1
 	}
 
-	client, err := okta.NewClient(
-		context.Background(),
-		okta.WithOrgUrl(c.Meta.GlobalOptions.OrgUrl),
-		okta.WithToken(c.Meta.GlobalOptions.ApiToken),
-	)
+	client, err := c.OktaClient()
 	if err != nil {
 		c.Logger.Printf("Failed to initialize Okta client: %v\n", err)
 		return 1

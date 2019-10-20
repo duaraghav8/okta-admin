@@ -1,7 +1,6 @@
 package command
 
 import (
-	"context"
 	"github.com/okta/okta-sdk-golang/okta"
 	"github.com/okta/okta-sdk-golang/okta/query"
 )
@@ -70,11 +69,7 @@ func (c *CreateUserCommand) Run(args []string) int {
 		return 1
 	}
 
-	client, err := okta.NewClient(
-		context.Background(),
-		okta.WithOrgUrl(c.Meta.GlobalOptions.OrgUrl),
-		okta.WithToken(c.Meta.GlobalOptions.ApiToken),
-	)
+	client, err := c.OktaClient()
 	if err != nil {
 		c.Logger.Printf("Failed to initialize Okta client: %v\n", err)
 		return 1
