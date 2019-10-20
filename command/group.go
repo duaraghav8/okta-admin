@@ -1,7 +1,6 @@
 package command
 
 import (
-	"github.com/duaraghav8/okta-admin/common"
 	oktaapi "github.com/duaraghav8/okta-admin/okta"
 	"github.com/okta/okta-sdk-golang/okta"
 	"github.com/okta/okta-sdk-golang/okta/query"
@@ -86,12 +85,12 @@ Links
   Apps:  {{.LinkApps}}
 `
 
-	res, _ := common.PrepareMessage(tpl, map[string]interface{}{
+	res, _ := PrepareMessage(tpl, map[string]interface{}{
 		"Id":          g.Id,
 		"Name":        g.Profile.Name,
 		"LinkUsers":   getLinkFromGroup(g, "users"),
 		"LinkApps":    getLinkFromGroup(g, "apps"),
-		"Description": common.FirstNonEmptyStr(g.Profile.Description, "[None]"),
+		"Description": FirstNonEmptyStr(g.Profile.Description, "[None]"),
 	})
 	return res
 }

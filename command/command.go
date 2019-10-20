@@ -5,7 +5,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/duaraghav8/okta-admin/common"
 	"github.com/okta/okta-sdk-golang/okta"
 	"log"
 )
@@ -72,7 +71,7 @@ func (c *Command) requiredArgs(args map[string]string) error {
 }
 
 func (c *Command) prepareHelpMessage(helpText string, filler map[string]interface{}) string {
-	res, err := common.PrepareMessage(helpText, filler)
+	res, err := PrepareMessage(helpText, filler)
 	if err != nil {
 		return fmt.Sprintf("Failed to render help message: %v\n", err)
 	}
