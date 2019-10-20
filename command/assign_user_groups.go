@@ -10,7 +10,7 @@ import (
 )
 
 type AssignUserGroupsCommand struct {
-	Meta *common.CommandMetadata
+	Command
 }
 
 type AssignUserGroupsCommandConfig struct {

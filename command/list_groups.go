@@ -10,7 +10,7 @@ import (
 )
 
 type ListGroupsCommand struct {
-	Meta *common.CommandMetadata
+	Command
 }
 
 type ListGroupsCommandConfig struct {

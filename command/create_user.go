@@ -9,7 +9,7 @@ import (
 )
 
 type CreateUserCommand struct {
-	Meta *common.CommandMetadata
+	Command
 }
 
 type CreateUserCommandConfig struct {

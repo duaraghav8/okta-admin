@@ -16,40 +16,29 @@ func main() {
 		logger.Printf("Failed to create metadata for actions: %v\n", err)
 		os.Exit(1)
 	}
+	globalCommand := cmd.Command{Meta: meta}
 
 	c := cli.CLI{
 		Name:    version.AppName,
 		Version: version.FormattedVersion(),
 		Commands: map[string]cli.CommandFactory{
 			"create-user": func() (command cli.Command, err error) {
-				return &cmd.CreateUserCommand{
-					Meta: meta,
-				}, nil
+				return &cmd.CreateUserCommand{Command: globalCommand}, nil
 			},
 			"deactivate-user": func() (command cli.Command, err error) {
-				return &cmd.DeactivateUserCommand{
-					Meta: meta,
-				}, nil
+				return &cmd.DeactivateUserCommand{Command: globalCommand}, nil
 			},
 			"reset-user-password": func() (command cli.Command, err error) {
-				return &cmd.ResetUserPasswordCommand{
-					Meta: meta,
-				}, nil
+				return &cmd.ResetUserPasswordCommand{Command: globalCommand}, nil
 			},
 			"reset-user-mfa": func() (command cli.Command, err error) {
-				return &cmd.ResetUserMultifactorsCommand{
-					Meta: meta,
-				}, nil
+				return &cmd.ResetUserMultifactorsCommand{Command: globalCommand}, nil
 			},
 			"list-groups": func() (command cli.Command, err error) {
-				return &cmd.ListGroupsCommand{
-					Meta: meta,
-				}, nil
+				return &cmd.ListGroupsCommand{Command: globalCommand}, nil
 			},
 			"assign-groups": func() (command cli.Command, err error) {
-				return &cmd.AssignUserGroupsCommand{
-					Meta: meta,
-				}, nil
+				return &cmd.AssignUserGroupsCommand{Command: globalCommand}, nil
 			},
 		},
 		Args: os.Args[1:],

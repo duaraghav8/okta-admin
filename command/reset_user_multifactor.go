@@ -10,7 +10,7 @@ import (
 )
 
 type ResetUserMultifactorsCommand struct {
-	Meta *common.CommandMetadata
+	Command
 }
 
 type ResetUserMultifactorsCommandConfig struct {

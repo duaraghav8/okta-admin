@@ -10,7 +10,7 @@ import (
 )
 
 type DeactivateUserCommand struct {
-	Meta *common.CommandMetadata
+	Command
 }
 
 type DeactivateUserCommandConfig struct {

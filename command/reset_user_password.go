@@ -10,7 +10,7 @@ import (
 )
 
 type ResetUserPasswordCommand struct {
-	Meta *common.CommandMetadata
+	Command
 }
 
 type ResetUserPasswordCommandConfig struct {
