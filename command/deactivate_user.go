@@ -86,7 +86,7 @@ func (c *DeactivateUserCommand) Run(args []string) int {
 		return 1
 	}
 	if resp.StatusCode != http.StatusOK {
-		c.Logger.Printf("Failed to deactivate member: %v\n", resp)
+		c.Logger.Printf("Failed to deactivate member: %s\n", resp.Status)
 		return 1
 	}
 

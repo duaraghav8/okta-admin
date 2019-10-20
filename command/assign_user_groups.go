@@ -98,7 +98,7 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 		select {
 		case u := <-getUserCh:
 			if u.Err != nil {
-				c.Logger.Printf("Failed to resolve u ID: %v\n", err)
+				c.Logger.Printf("Failed to resolve user ID: %v\n", err)
 				return 1
 			}
 			user = u.User
@@ -108,7 +108,7 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 				return 1
 			}
 			if g.Resp.StatusCode != http.StatusOK {
-				c.Logger.Printf("Failed to fetch list of groups: %v\n", g.Resp)
+				c.Logger.Printf("Failed to fetch list of groups: %s\n", g.Resp.Status)
 				return 1
 			}
 			groups = g.Groups

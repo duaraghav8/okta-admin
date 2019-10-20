@@ -3,6 +3,7 @@ package command
 import (
 	"github.com/okta/okta-sdk-golang/okta"
 	"github.com/okta/okta-sdk-golang/okta/query"
+	"net/http"
 )
 
 type CreateUserCommand struct {
@@ -83,9 +84,13 @@ func (c *CreateUserCommand) Run(args []string) int {
 		"firstName": cfg.FirstName,
 		"lastName":  cfg.LastName,
 	}
-	user, _, err := client.User.CreateUser(okta.User{Profile: &profile}, queries)
+	user, resp, err := client.User.CreateUser(okta.User{Profile: &profile}, queries)
 	if err != nil {
 		c.Logger.Printf("Failed to create user: %v\n", err)
+		return 1
+	}
+	if resp.StatusCode != http.StatusOK {
+		c.Logger.Printf("Failed to create user: %s\n", resp.Status)
 		return 1
 	}
 

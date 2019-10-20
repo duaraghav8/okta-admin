@@ -88,7 +88,7 @@ func (c *ResetUserMultifactorsCommand) Run(args []string) int {
 		return 1
 	}
 	if resp.StatusCode != http.StatusOK {
-		c.Logger.Printf("Failed to reset member's multifactors: %v\n", resp)
+		c.Logger.Printf("Failed to reset member's multifactors: %s\n", resp.Status)
 		return 1
 	}
 

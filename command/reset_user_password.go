@@ -86,7 +86,7 @@ func (c *ResetUserPasswordCommand) Run(args []string) int {
 		return 1
 	}
 	if resp.StatusCode != http.StatusOK {
-		c.Logger.Printf("Failed to reset member's password: %v\n", resp)
+		c.Logger.Printf("Failed to reset member's password: %s\n", resp.Status)
 		return 1
 	}
 
