@@ -2,7 +2,6 @@ package command
 
 import (
 	"context"
-	"fmt"
 	"github.com/duaraghav8/okta-admin/common"
 	"github.com/okta/okta-sdk-golang/okta"
 	"net/http"
@@ -40,16 +39,12 @@ Options:
             groups. If unspecified, only Group Names are returned.
 `
 
-	res, err := common.PrepareMessage(
+	return c.Command.prepareHelpMessage(
 		helpText,
 		map[string]interface{}{
 			"GlobalOptionsHelpText": c.Meta.GlobalOptionsHelpText,
 		},
 	)
-	if err != nil {
-		return fmt.Sprintf("Failed to render help message: %v\n", err)
-	}
-	return res
 }
 
 func (c *ListGroupsCommand) ParseArgs(args []string) (*ListGroupsCommandConfig, error) {

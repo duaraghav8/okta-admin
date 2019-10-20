@@ -2,7 +2,6 @@ package command
 
 import (
 	"context"
-	"fmt"
 	"github.com/duaraghav8/okta-admin/common"
 	"github.com/okta/okta-sdk-golang/okta"
 	"github.com/okta/okta-sdk-golang/okta/query"
@@ -37,16 +36,12 @@ Options:
   -team  The team in the organization the user should be part of
 `
 
-	res, err := common.PrepareMessage(
+	return c.Command.prepareHelpMessage(
 		helpText,
 		map[string]interface{}{
 			"GlobalOptionsHelpText": c.Meta.GlobalOptionsHelpText,
 		},
 	)
-	if err != nil {
-		return fmt.Sprintf("Failed to render help message: %v\n", err)
-	}
-	return res
 }
 
 func (c *CreateUserCommand) ParseArgs(args []string) (*CreateUserCommandConfig, error) {

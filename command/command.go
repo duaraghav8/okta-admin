@@ -2,6 +2,8 @@ package command
 
 import (
 	"flag"
+	"fmt"
+	"github.com/duaraghav8/okta-admin/common"
 	"log"
 )
 
@@ -25,4 +27,12 @@ type Metadata struct {
 	FlagSet               *flag.FlagSet
 	GlobalOptions         *Config
 	GlobalOptionsHelpText string
+}
+
+func (c *Command) prepareHelpMessage(helpText string, filler map[string]interface{}) string {
+	res, err := common.PrepareMessage(helpText, filler)
+	if err != nil {
+		return fmt.Sprintf("Failed to render help message: %v\n", err)
+	}
+	return res
 }

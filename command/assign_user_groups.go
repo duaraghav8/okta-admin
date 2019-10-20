@@ -2,7 +2,6 @@ package command
 
 import (
 	"context"
-	"fmt"
 	"github.com/duaraghav8/okta-admin/common"
 	oktaapi "github.com/duaraghav8/okta-admin/okta"
 	"github.com/okta/okta-sdk-golang/okta"
@@ -37,16 +36,12 @@ Options:
   -groups Comma-separated list of groups to assign to the user
 `
 
-	res, err := common.PrepareMessage(
+	return c.Command.prepareHelpMessage(
 		helpText,
 		map[string]interface{}{
 			"GlobalOptionsHelpText": c.Meta.GlobalOptionsHelpText,
 		},
 	)
-	if err != nil {
-		return fmt.Sprintf("Failed to render help message: %v\n", err)
-	}
-	return res
 }
 
 func (c *AssignUserGroupsCommand) ParseArgs(args []string) (*AssignUserGroupsCommandConfig, error) {
