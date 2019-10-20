@@ -63,12 +63,7 @@ func (c *ListGroupsCommand) ParseArgs(args []string) (*ListGroupsCommandConfig, 
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-
-	if groupNames == "" {
-		cfg.GroupNames = []string{}
-	} else {
-		cfg.GroupNames = SanitizeGroupNames(strings.Split(groupNames, GroupNameSep))
-	}
+	cfg.GroupNames = GetGroupNames(groupNames, GroupNameSep)
 
 	return &cfg, common.RequiredArgs(map[string]string{
 		"org url":   c.Meta.GlobalOptions.OrgUrl,

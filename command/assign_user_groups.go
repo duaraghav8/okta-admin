@@ -7,10 +7,7 @@ import (
 	oktaapi "github.com/duaraghav8/okta-admin/okta"
 	"github.com/okta/okta-sdk-golang/okta"
 	"net/http"
-	"strings"
 )
-
-const GroupNameSep = ","
 
 type AssignUserGroupsCommand struct {
 	Meta *common.CommandMetadata
@@ -22,7 +19,7 @@ type AssignUserGroupsCommandConfig struct {
 }
 
 func (c *AssignUserGroupsCommand) Synopsis() string {
-	return "Assign groups to user"
+	return "Assign groups to a user"
 }
 
 func (c *AssignUserGroupsCommand) Help() string {
@@ -63,14 +60,7 @@ func (c *AssignUserGroupsCommand) ParseArgs(args []string) (*AssignUserGroupsCom
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-
-	// Extract group names from the single comma-separated string
-	// received by the -groups flag.
-	if groupNames == "" {
-		cfg.GroupNames = []string{}
-	} else {
-		cfg.GroupNames = SanitizeGroupNames(strings.Split(groupNames, GroupNameSep))
-	}
+	cfg.GroupNames = GetGroupNames(groupNames, GroupNameSep)
 
 	return &cfg, common.RequiredArgs(map[string]string{
 		"email":     cfg.EmailID,

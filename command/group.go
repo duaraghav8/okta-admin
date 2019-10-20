@@ -8,11 +8,15 @@ import (
 	"strings"
 )
 
+// listGroupsResult contains the result of an async HTTP request
+// made to Okta API to fetch list of Groups.
 type listGroupsResult struct {
 	oktaapi.GenericResult
 	Groups []*okta.Group
 }
 
+// addUserToGroup contains the result of an async HTTP request
+// made to Okta API to add a User to a Group.
 type addUserToGroupResult struct {
 	oktaapi.GenericResult
 	GroupName, GroupId string
@@ -21,6 +25,10 @@ type addUserToGroupResult struct {
 type NumberOfExistingGroups uint32
 type OktaGroups []*okta.Group
 type FilterGroupsEvalFunc func(group *okta.Group, i int) bool
+
+// GroupNameSep is the string by which the group name list
+// supplied as raw input is split into individual names.
+const GroupNameSep = ","
 
 // GetID returns the ID of the Group whose name is specified.
 // If the Group with that name doesn't exist, this function
@@ -56,6 +64,17 @@ func SanitizeGroupNames(names []string) []string {
 	return n
 }
 
+// GetGroupNames takes a list of group names as a raw string
+// and returns a structured list of the same.
+func GetGroupNames(rawInput, sep string) []string {
+	if strings.TrimSpace(rawInput) == "" {
+		return []string{}
+	}
+	return SanitizeGroupNames(strings.Split(rawInput, sep))
+}
+
+// GetGroupDetailsPretty returns a pretty string describing
+// the group passed to it.
 func GetGroupDetailsPretty(g *okta.Group) string {
 	tpl := `
 Name:        {{.Name}}
@@ -70,18 +89,22 @@ Links
 	res, _ := common.PrepareMessage(tpl, map[string]interface{}{
 		"Id":          g.Id,
 		"Name":        g.Profile.Name,
-		"LinkUsers":   getLink(g, "users"),
-		"LinkApps":    getLink(g, "apps"),
+		"LinkUsers":   getLinkFromGroup(g, "users"),
+		"LinkApps":    getLinkFromGroup(g, "apps"),
 		"Description": common.FirstNonEmptyStr(g.Profile.Description, "[None]"),
 	})
 	return res
 }
 
-func getLink(g *okta.Group, linkType string) string {
+// getLinkFromGroup returns a specific type of link from the
+// group passed to it. It abstracts away the nuances of
+// typecasting Links to retrieve data.
+func getLinkFromGroup(g *okta.Group, linkType string) string {
 	links := g.Links.(map[string]interface{})
 	return links[linkType].(map[string]interface{})["href"].(string)
 }
 
+// listGroups fetches the list of Groups from Okta API asynchronously
 func listGroups(client *okta.Client, qp *query.Params, ch chan<- *listGroupsResult) {
 	groups, resp, err := client.Group.ListGroups(qp)
 	ch <- &listGroupsResult{
@@ -90,6 +113,7 @@ func listGroups(client *okta.Client, qp *query.Params, ch chan<- *listGroupsResu
 	}
 }
 
+// addUserToGroup adds a user to a group using the Okta API asynchronously
 func addUserToGroup(client *okta.Client, uid, gid, gname string, ch chan<- *addUserToGroupResult) {
 	resp, err := client.Group.AddUserToGroup(gid, uid)
 	ch <- &addUserToGroupResult{
