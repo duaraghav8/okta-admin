@@ -5,6 +5,7 @@ import (
 	"os"
 
 	cmd "github.com/duaraghav8/okta-admin/command"
+	"github.com/duaraghav8/okta-admin/version"
 	"github.com/mitchellh/cli"
 )
 
@@ -17,8 +18,8 @@ func main() {
 	}
 
 	c := cli.CLI{
-		Name:    AppName,
-		Version: Version,
+		Name:    version.AppName,
+		Version: version.FormattedVersion(),
 		Commands: map[string]cli.CommandFactory{
 			"create-user": func() (command cli.Command, err error) {
 				return &cmd.CreateUserCommand{
