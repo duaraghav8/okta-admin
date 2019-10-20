@@ -9,13 +9,6 @@ import (
 	"log"
 )
 
-// Command contains objects passed to all CLI commands
-type Command struct {
-	oktaClient *okta.Client
-	Meta       *Metadata
-	Logger     *log.Logger
-}
-
 // Config contains options that are made available
 // to all actions. It is used to pass down global
 // configuration.
@@ -30,6 +23,13 @@ type Metadata struct {
 	FlagSet               *flag.FlagSet
 	GlobalOptions         *Config
 	GlobalOptionsHelpText string
+}
+
+// Command contains objects passed to all CLI commands
+type Command struct {
+	oktaClient *okta.Client
+	Meta       *Metadata
+	Logger     *log.Logger
 }
 
 // OktaClient returns an instance of Okta Client initialized

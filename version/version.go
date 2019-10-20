@@ -3,7 +3,7 @@ package version
 import "fmt"
 
 // The git commit compiled into the final binaries.
-// This will be filled by the compiler.
+// This will be set by the compiler.
 var GitCommit string
 
 const (
