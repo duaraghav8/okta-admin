@@ -18,5 +18,5 @@ func getUser(email, orgUrl, apiToken string, ch chan<- *getUserResult) {
 		},
 		email,
 	)
-	ch<- &getUserResult{User: user, Resp: resp, Err: err}
+	ch <- &getUserResult{User: user, Resp: resp, Err: err}
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	cmd "github.com/duaraghav8/okta-admin/command"
@@ -9,9 +9,10 @@ import (
 )
 
 func main() {
-	meta, err := createMeta()
+	logger := log.New(os.Stdout, "", 0)
+	meta, err := createMeta(logger)
 	if err != nil {
-		fmt.Printf("Failed to create metadata for actions: %v\n", err)
+		logger.Printf("Failed to create metadata for actions: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -24,13 +25,13 @@ func main() {
 					Meta: meta,
 				}, nil
 			},
-			"reset-user-password": func() (command cli.Command, err error) {
-				return &cmd.ResetUserPasswordCommand{
+			"deactivate-user": func() (command cli.Command, err error) {
+				return &cmd.DeactivateUserCommand{
 					Meta: meta,
 				}, nil
 			},
-			"deactivate-user": func() (command cli.Command, err error) {
-				return &cmd.DeactivateUserCommand{
+			"reset-user-password": func() (command cli.Command, err error) {
+				return &cmd.ResetUserPasswordCommand{
 					Meta: meta,
 				}, nil
 			},
@@ -39,13 +40,13 @@ func main() {
 					Meta: meta,
 				}, nil
 			},
-			"assign-groups": func() (command cli.Command, err error) {
-				return &cmd.AssignUserGroupsCommand{
+			"list-groups": func() (command cli.Command, err error) {
+				return &cmd.ListGroupsCommand{
 					Meta: meta,
 				}, nil
 			},
-			"list-groups": func() (command cli.Command, err error) {
-				return &cmd.ListGroupsCommand{
+			"assign-groups": func() (command cli.Command, err error) {
+				return &cmd.AssignUserGroupsCommand{
 					Meta: meta,
 				}, nil
 			},
@@ -55,7 +56,7 @@ func main() {
 
 	exitStatus, err := c.Run()
 	if err != nil {
-		fmt.Println(err)
+		logger.Println(err)
 	}
 
 	os.Exit(exitStatus)

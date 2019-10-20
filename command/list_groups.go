@@ -79,7 +79,7 @@ func (c *ListGroupsCommand) ParseArgs(args []string) (*ListGroupsCommandConfig, 
 func (c *ListGroupsCommand) Run(args []string) int {
 	cfg, err := c.ParseArgs(args)
 	if err != nil {
-		fmt.Printf("Failed to parse arguments: %v\n", err)
+		c.Meta.Logger.Printf("Failed to parse arguments: %v\n", err)
 		return 1
 	}
 
@@ -89,17 +89,17 @@ func (c *ListGroupsCommand) Run(args []string) int {
 		okta.WithToken(c.Meta.GlobalOptions.ApiToken),
 	)
 	if err != nil {
-		fmt.Printf("Failed to initialize Okta client: %v\n", err)
+		c.Meta.Logger.Printf("Failed to initialize Okta client: %v\n", err)
 		return 1
 	}
 
 	groups, resp, err := client.Group.ListGroups(nil)
 	if err != nil {
-		fmt.Printf("Failed to fetch groups list: %v\n", err)
+		c.Meta.Logger.Printf("Failed to fetch groups list: %v\n", err)
 		return 1
 	}
 	if resp.StatusCode != http.StatusOK {
-		fmt.Printf("Failed to fetch groups list: %s\n", resp.Status)
+		c.Meta.Logger.Printf("Failed to fetch groups list: %s\n", resp.Status)
 		return 1
 	}
 
@@ -117,10 +117,10 @@ func (c *ListGroupsCommand) Run(args []string) int {
 
 	for _, g := range groups {
 		if cfg.Detailed {
-			fmt.Println(GetGroupDetailsPretty(g))
-			fmt.Println(strings.Repeat("=", 40))
+			c.Meta.Logger.Println(GetGroupDetailsPretty(g))
+			c.Meta.Logger.Println(strings.Repeat("=", 40))
 		} else {
-			fmt.Println(g.Profile.Name)
+			c.Meta.Logger.Println(g.Profile.Name)
 		}
 	}
 

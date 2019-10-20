@@ -1,6 +1,8 @@
 package main
 
 import (
+	"io/ioutil"
+	"log"
 	"os"
 	"testing"
 )
@@ -8,7 +10,7 @@ import (
 func testMetaGlobalOptValues(t *testing.T, args []string, expected map[string]string) {
 	t.Helper()
 
-	meta, err := createMeta()
+	meta, err := createMeta(log.New(ioutil.Discard, "", 0))
 	if err != nil {
 		t.Fatalf("Failed to create metadata: %v", err)
 	}

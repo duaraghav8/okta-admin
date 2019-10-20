@@ -1,10 +1,10 @@
 package command
 
 import (
-"flag"
-"github.com/duaraghav8/okta-admin/common"
-"strings"
-"testing"
+	"flag"
+	"github.com/duaraghav8/okta-admin/common"
+	"strings"
+	"testing"
 )
 
 func createTestDeactivateUserCommand(globalOptsHelpText string) *DeactivateUserCommand {

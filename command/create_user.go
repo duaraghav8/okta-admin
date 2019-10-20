@@ -62,9 +62,9 @@ func (c *CreateUserCommand) ParseArgs(args []string) (*CreateUserCommandConfig, 
 		return &cfg, err
 	}
 	return &cfg, common.RequiredArgs(map[string]string{
-		"email": cfg.EmailID,
-		"team": cfg.Team,
-		"org url": c.Meta.GlobalOptions.OrgUrl,
+		"email":     cfg.EmailID,
+		"team":      cfg.Team,
+		"org url":   c.Meta.GlobalOptions.OrgUrl,
 		"api token": c.Meta.GlobalOptions.ApiToken,
 	})
 }
@@ -72,7 +72,7 @@ func (c *CreateUserCommand) ParseArgs(args []string) (*CreateUserCommandConfig, 
 func (c *CreateUserCommand) Run(args []string) int {
 	cfg, err := c.ParseArgs(args)
 	if err != nil {
-		fmt.Printf("Failed to parse arguments: %v\n", err)
+		c.Meta.Logger.Printf("Failed to parse arguments: %v\n", err)
 		return 1
 	}
 
@@ -82,7 +82,7 @@ func (c *CreateUserCommand) Run(args []string) int {
 		okta.WithToken(c.Meta.GlobalOptions.ApiToken),
 	)
 	if err != nil {
-		fmt.Printf("Failed to initialize Okta client: %v\n", err)
+		c.Meta.Logger.Printf("Failed to initialize Okta client: %v\n", err)
 		return 1
 	}
 
@@ -96,10 +96,10 @@ func (c *CreateUserCommand) Run(args []string) int {
 	}
 	user, _, err := client.User.CreateUser(okta.User{Profile: &profile}, queries)
 	if err != nil {
-		fmt.Printf("Failed to create user: %v\n", err)
+		c.Meta.Logger.Printf("Failed to create user: %v\n", err)
 		return 1
 	}
 
-	fmt.Printf("ID: %s\n", user.Id)
+	c.Meta.Logger.Printf("ID: %s\n", user.Id)
 	return 0
 }
