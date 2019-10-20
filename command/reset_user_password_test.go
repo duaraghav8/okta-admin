@@ -1,22 +1,14 @@
 package command
 
 import (
-	"flag"
-	"github.com/duaraghav8/okta-admin/common"
 	"strings"
 	"testing"
 )
 
 func createTestResetUserPasswordCommand(globalOptsHelpText string) *ResetUserPasswordCommand {
-	m := &common.CommandMetadata{
-		GlobalOptionsHelpText: globalOptsHelpText,
-		GlobalOptions: &common.CommandConfig{
-			OrgUrl:   "https://foo.okta.com/",
-			ApiToken: "123abc",
-		},
-		FlagSet: flag.NewFlagSet("test_reset_user_password_cmd", flag.ContinueOnError),
+	return &ResetUserPasswordCommand{
+		Command: createTestCommand(globalOptsHelpText, "test_reset_user_password_cmd"),
 	}
-	return &ResetUserPasswordCommand{Meta: m}
 }
 
 func TestResetUserPasswordCommand_Help(t *testing.T) {

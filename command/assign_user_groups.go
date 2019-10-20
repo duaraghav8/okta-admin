@@ -2,14 +2,13 @@ package command
 
 import (
 	"context"
-	"github.com/duaraghav8/okta-admin/common"
 	oktaapi "github.com/duaraghav8/okta-admin/okta"
 	"github.com/okta/okta-sdk-golang/okta"
 	"net/http"
 )
 
 type AssignUserGroupsCommand struct {
-	Command
+	*Command
 }
 
 type AssignUserGroupsCommandConfig struct {
@@ -57,7 +56,7 @@ func (c *AssignUserGroupsCommand) ParseArgs(args []string) (*AssignUserGroupsCom
 	}
 	cfg.GroupNames = GetGroupNames(groupNames, GroupNameSep)
 
-	return &cfg, common.RequiredArgs(map[string]string{
+	return &cfg, c.Command.requiredArgs(map[string]string{
 		"email":     cfg.EmailID,
 		"org url":   c.Meta.GlobalOptions.OrgUrl,
 		"api token": c.Meta.GlobalOptions.ApiToken,

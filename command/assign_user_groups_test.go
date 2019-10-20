@@ -1,22 +1,14 @@
 package command
 
 import (
-	"flag"
-	"github.com/duaraghav8/okta-admin/common"
 	"strings"
 	"testing"
 )
 
 func createTestAssignUserGroupsCommand(globalOptsHelpText string) *AssignUserGroupsCommand {
-	m := &common.CommandMetadata{
-		GlobalOptionsHelpText: globalOptsHelpText,
-		GlobalOptions: &common.CommandConfig{
-			OrgUrl:   "https://foo.okta.com/",
-			ApiToken: "123abc",
-		},
-		FlagSet: flag.NewFlagSet("test_assign_user_groups_cmd", flag.ContinueOnError),
+	return &AssignUserGroupsCommand{
+		Command: createTestCommand(globalOptsHelpText, "test_assign_user_groups_cmd"),
 	}
-	return &AssignUserGroupsCommand{Meta: m}
 }
 
 func TestAssignUserGroupsCommand_Help(t *testing.T) {

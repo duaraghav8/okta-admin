@@ -2,14 +2,13 @@ package command
 
 import (
 	"context"
-	"github.com/duaraghav8/okta-admin/common"
 	oktaapi "github.com/duaraghav8/okta-admin/okta"
 	"github.com/okta/okta-sdk-golang/okta"
 	"net/http"
 )
 
 type DeactivateUserCommand struct {
-	Command
+	*Command
 }
 
 type DeactivateUserCommandConfig struct {
@@ -49,7 +48,7 @@ func (c *DeactivateUserCommand) ParseArgs(args []string) (*DeactivateUserCommand
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	return &cfg, common.RequiredArgs(map[string]string{
+	return &cfg, c.Command.requiredArgs(map[string]string{
 		"email":     cfg.EmailID,
 		"org url":   c.Meta.GlobalOptions.OrgUrl,
 		"api token": c.Meta.GlobalOptions.ApiToken,

@@ -2,14 +2,13 @@ package command
 
 import (
 	"context"
-	"github.com/duaraghav8/okta-admin/common"
 	"github.com/okta/okta-sdk-golang/okta"
 	"net/http"
 	"strings"
 )
 
 type ListGroupsCommand struct {
-	Command
+	*Command
 }
 
 type ListGroupsCommandConfig struct {
@@ -60,7 +59,7 @@ func (c *ListGroupsCommand) ParseArgs(args []string) (*ListGroupsCommandConfig, 
 	}
 	cfg.GroupNames = GetGroupNames(groupNames, GroupNameSep)
 
-	return &cfg, common.RequiredArgs(map[string]string{
+	return &cfg, c.Command.requiredArgs(map[string]string{
 		"org url":   c.Meta.GlobalOptions.OrgUrl,
 		"api token": c.Meta.GlobalOptions.ApiToken,
 	})

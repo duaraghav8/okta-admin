@@ -16,7 +16,7 @@ func main() {
 		logger.Printf("Failed to create metadata for actions: %v\n", err)
 		os.Exit(1)
 	}
-	globalCommand := cmd.Command{Meta: meta}
+	globalCommand := &cmd.Command{Meta: meta}
 
 	c := cli.CLI{
 		Name:    version.AppName,

@@ -2,13 +2,12 @@ package command
 
 import (
 	"context"
-	"github.com/duaraghav8/okta-admin/common"
 	"github.com/okta/okta-sdk-golang/okta"
 	"github.com/okta/okta-sdk-golang/okta/query"
 )
 
 type CreateUserCommand struct {
-	Command
+	*Command
 }
 
 type CreateUserCommandConfig struct {
@@ -56,7 +55,7 @@ func (c *CreateUserCommand) ParseArgs(args []string) (*CreateUserCommandConfig, 
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	return &cfg, common.RequiredArgs(map[string]string{
+	return &cfg, c.Command.requiredArgs(map[string]string{
 		"email":     cfg.EmailID,
 		"team":      cfg.Team,
 		"org url":   c.Meta.GlobalOptions.OrgUrl,

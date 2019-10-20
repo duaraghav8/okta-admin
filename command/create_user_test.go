@@ -1,22 +1,14 @@
 package command
 
 import (
-	"flag"
-	"github.com/duaraghav8/okta-admin/common"
 	"strings"
 	"testing"
 )
 
 func createTestCreateUserCommand(globalOptsHelpText string) *CreateUserCommand {
-	m := &common.CommandMetadata{
-		GlobalOptionsHelpText: globalOptsHelpText,
-		GlobalOptions: &common.CommandConfig{
-			OrgUrl:   "https://foo.okta.com/",
-			ApiToken: "123abc",
-		},
-		FlagSet: flag.NewFlagSet("test_create_user_cmd", flag.ContinueOnError),
+	return &CreateUserCommand{
+		Command: createTestCommand(globalOptsHelpText, "test_create_user_cmd"),
 	}
-	return &CreateUserCommand{Meta: m}
 }
 
 func TestCreateUserCommand_Help(t *testing.T) {

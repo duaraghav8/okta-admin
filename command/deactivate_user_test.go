@@ -1,22 +1,14 @@
 package command
 
 import (
-	"flag"
-	"github.com/duaraghav8/okta-admin/common"
 	"strings"
 	"testing"
 )
 
 func createTestDeactivateUserCommand(globalOptsHelpText string) *DeactivateUserCommand {
-	m := &common.CommandMetadata{
-		GlobalOptionsHelpText: globalOptsHelpText,
-		GlobalOptions: &common.CommandConfig{
-			OrgUrl:   "https://foo.okta.com/",
-			ApiToken: "123abc",
-		},
-		FlagSet: flag.NewFlagSet("test_deactivate_user_cmd", flag.ContinueOnError),
+	return &DeactivateUserCommand{
+		Command: createTestCommand(globalOptsHelpText, "test_deactivate_user_cmd"),
 	}
-	return &DeactivateUserCommand{Meta: m}
 }
 
 func TestDeactivateUserCommand_Help(t *testing.T) {
