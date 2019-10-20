@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"github.com/duaraghav8/okta-admin/command"
-	"log"
 	"os"
 )
 
@@ -11,7 +10,7 @@ import (
 // all actions. None of the global options are treated as
 // required. Checking for emptiness of an option and
 // further validations are therefore the user's responsibility.
-func createMeta(logger *log.Logger) (*command.Metadata, error) {
+func createMeta() (*command.Metadata, error) {
 	var (
 		meta       command.Metadata
 		globalOpts command.Config
@@ -22,7 +21,6 @@ func createMeta(logger *log.Logger) (*command.Metadata, error) {
 	flags.StringVar(&globalOpts.ApiToken, "api-token", os.Getenv("OKTA_API_TOKEN"), "")
 
 	meta = command.Metadata{
-		Logger:        logger,
 		FlagSet:       flags,
 		GlobalOptions: &globalOpts,
 		GlobalOptionsHelpText: `

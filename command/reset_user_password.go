@@ -58,7 +58,7 @@ func (c *ResetUserPasswordCommand) ParseArgs(args []string) (*ResetUserPasswordC
 func (c *ResetUserPasswordCommand) Run(args []string) int {
 	cfg, err := c.ParseArgs(args)
 	if err != nil {
-		c.Meta.Logger.Printf("Failed to parse arguments: %v\n", err)
+		c.Logger.Printf("Failed to parse arguments: %v\n", err)
 		return 1
 	}
 
@@ -68,7 +68,7 @@ func (c *ResetUserPasswordCommand) Run(args []string) int {
 		okta.WithToken(c.Meta.GlobalOptions.ApiToken),
 	)
 	if err != nil {
-		c.Meta.Logger.Printf("Failed to initialize Okta client: %v\n", err)
+		c.Logger.Printf("Failed to initialize Okta client: %v\n", err)
 		return 1
 	}
 
@@ -81,21 +81,21 @@ func (c *ResetUserPasswordCommand) Run(args []string) int {
 		cfg.EmailID,
 	)
 	if err != nil {
-		c.Meta.Logger.Printf("Failed to resolve user ID: %v\n", err)
+		c.Logger.Printf("Failed to resolve user ID: %v\n", err)
 		return 1
 	}
 
 	// Reset password
 	_, resp, err := client.User.ResetPassword(user["id"].(string), nil)
 	if err != nil {
-		c.Meta.Logger.Printf("Failed to reset member's password: %v\n", err)
+		c.Logger.Printf("Failed to reset member's password: %v\n", err)
 		return 1
 	}
 	if resp.StatusCode != http.StatusOK {
-		c.Meta.Logger.Printf("Failed to reset member's password: %v\n", resp)
+		c.Logger.Printf("Failed to reset member's password: %v\n", resp)
 		return 1
 	}
 
-	c.Meta.Logger.Printf("Reset link sent to %s\n", cfg.EmailID)
+	c.Logger.Printf("Reset link sent to %s\n", cfg.EmailID)
 	return 0
 }

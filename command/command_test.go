@@ -1,6 +1,10 @@
 package command
 
-import "flag"
+import (
+	"flag"
+	"io/ioutil"
+	"log"
+)
 
 func createTestCommand(globalOptsHelpText, flagSetName string) *Command {
 	m := &Metadata{
@@ -11,5 +15,8 @@ func createTestCommand(globalOptsHelpText, flagSetName string) *Command {
 		},
 		FlagSet: flag.NewFlagSet(flagSetName, flag.ContinueOnError),
 	}
-	return &Command{Meta: m}
+	return &Command{
+		Meta:   m,
+		Logger: log.New(ioutil.Discard, "", 0),
+	}
 }

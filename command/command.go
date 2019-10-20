@@ -8,9 +8,10 @@ import (
 	"log"
 )
 
-// Command contains data passed to all CLI commands
+// Command contains objects passed to all CLI commands
 type Command struct {
-	Meta *Metadata
+	Meta   *Metadata
+	Logger *log.Logger
 }
 
 // Config contains options that are made available
@@ -24,7 +25,6 @@ type Config struct {
 // This makes making structural changes in data passed
 // to commands easy.
 type Metadata struct {
-	Logger                *log.Logger
 	FlagSet               *flag.FlagSet
 	GlobalOptions         *Config
 	GlobalOptionsHelpText string

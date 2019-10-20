@@ -76,11 +76,11 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 
 	cfg, err := c.ParseArgs(args)
 	if err != nil {
-		c.Meta.Logger.Printf("Failed to parse arguments: %v\n", err)
+		c.Logger.Printf("Failed to parse arguments: %v\n", err)
 		return 1
 	}
 	if len(cfg.GroupNames) == 0 {
-		c.Meta.Logger.Println("No groups were specified, nothing to do")
+		c.Logger.Println("No groups were specified, nothing to do")
 		return 0
 	}
 
@@ -90,7 +90,7 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 		okta.WithToken(c.Meta.GlobalOptions.ApiToken),
 	)
 	if err != nil {
-		c.Meta.Logger.Printf("Failed to initialize Okta client: %v\n", err)
+		c.Logger.Printf("Failed to initialize Okta client: %v\n", err)
 		return 1
 	}
 
@@ -104,17 +104,17 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 		select {
 		case u := <-getUserCh:
 			if u.Err != nil {
-				c.Meta.Logger.Printf("Failed to resolve u ID: %v\n", err)
+				c.Logger.Printf("Failed to resolve u ID: %v\n", err)
 				return 1
 			}
 			user = u.User
 		case g := <-listGroupsCh:
 			if g.Err != nil {
-				c.Meta.Logger.Printf("Failed to fetch list of groups: %v\n", err)
+				c.Logger.Printf("Failed to fetch list of groups: %v\n", err)
 				return 1
 			}
 			if g.Resp.StatusCode != http.StatusOK {
-				c.Meta.Logger.Printf("Failed to fetch list of groups: %v\n", g.Resp)
+				c.Logger.Printf("Failed to fetch list of groups: %v\n", g.Resp)
 				return 1
 			}
 			groups = g.Groups
@@ -125,7 +125,7 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 	for _, n := range cfg.GroupNames {
 		gid := groups.GetID(n)
 		if gid == "" {
-			c.Meta.Logger.Printf("%s does not exist\n", n)
+			c.Logger.Printf("%s does not exist\n", n)
 			neg--
 			continue
 		}
@@ -135,11 +135,11 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 	for i := 0; i < int(neg); i++ {
 		added := <-addUserToGroupCh
 		if added.Err != nil {
-			c.Meta.Logger.Printf("Failed to add user to %s: %v\n", added.GroupName, added.Err)
+			c.Logger.Printf("Failed to add user to %s: %v\n", added.GroupName, added.Err)
 		} else if added.Resp.StatusCode != http.StatusNoContent {
-			c.Meta.Logger.Printf("Failed to add user to %s: %s\n", added.GroupName, added.Resp.Status)
+			c.Logger.Printf("Failed to add user to %s: %s\n", added.GroupName, added.Resp.Status)
 		} else {
-			c.Meta.Logger.Printf("Added to %s\n", added.GroupName)
+			c.Logger.Printf("Added to %s\n", added.GroupName)
 		}
 	}
 

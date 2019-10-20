@@ -11,12 +11,16 @@ import (
 
 func main() {
 	logger := log.New(os.Stdout, "", 0)
-	meta, err := createMeta(logger)
+	meta, err := createMeta()
 	if err != nil {
 		logger.Printf("Failed to create metadata for actions: %v\n", err)
 		os.Exit(1)
 	}
-	globalCommand := &cmd.Command{Meta: meta}
+
+	globalCommand := &cmd.Command{
+		Meta:   meta,
+		Logger: logger,
+	}
 
 	c := cli.CLI{
 		Name:    version.AppName,
