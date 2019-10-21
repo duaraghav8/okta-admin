@@ -28,9 +28,9 @@ type Metadata struct {
 
 // Command contains objects passed to all CLI commands
 type Command struct {
-	oktaClient *okta.Client
 	Meta       *Metadata
 	Logger     *log.Logger
+	oktaClient *okta.Client
 }
 
 // OktaClient returns an instance of Okta Client initialized
