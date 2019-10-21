@@ -1,7 +1,6 @@
 package command
 
 import (
-	"strings"
 	"testing"
 )
 
@@ -13,13 +12,8 @@ func createTestResetUserMultifactorsCommand(globalOptsHelpText string) *ResetUse
 
 func TestResetUserMultifactorsCommand_Help(t *testing.T) {
 	t.Parallel()
-	const globalHelpMsg = `
-Welcome to Hogwarts!
-`
-	c := createTestResetUserMultifactorsCommand(globalHelpMsg)
-	if !strings.Contains(c.Help(), globalHelpMsg) {
-		t.Errorf("Expected final help message to contain \"%s\"", globalHelpMsg)
-	}
+	c := createTestResetUserMultifactorsCommand(testHelpMessage)
+	testCommandHelp(t, c.Help())
 }
 
 func TestResetUserMultifactorsCommand_ParseArgs(t *testing.T) {

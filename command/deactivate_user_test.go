@@ -1,7 +1,6 @@
 package command
 
 import (
-	"strings"
 	"testing"
 )
 
@@ -13,13 +12,8 @@ func createTestDeactivateUserCommand(globalOptsHelpText string) *DeactivateUserC
 
 func TestDeactivateUserCommand_Help(t *testing.T) {
 	t.Parallel()
-	const globalHelpMsg = `
-Welcome to Hogwarts!
-`
-	c := createTestDeactivateUserCommand(globalHelpMsg)
-	if !strings.Contains(c.Help(), globalHelpMsg) {
-		t.Errorf("Expected final help message to contain \"%s\"", globalHelpMsg)
-	}
+	c := createTestDeactivateUserCommand(testHelpMessage)
+	testCommandHelp(t, c.Help())
 }
 
 func TestDeactivateUserCommand_ParseArgs(t *testing.T) {

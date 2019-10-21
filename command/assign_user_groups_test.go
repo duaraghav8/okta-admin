@@ -1,7 +1,6 @@
 package command
 
 import (
-	"strings"
 	"testing"
 )
 
@@ -13,13 +12,8 @@ func createTestAssignUserGroupsCommand(globalOptsHelpText string) *AssignUserGro
 
 func TestAssignUserGroupsCommand_Help(t *testing.T) {
 	t.Parallel()
-	const globalHelpMsg = `
-Welcome to Hogwarts!
-`
-	c := createTestAssignUserGroupsCommand(globalHelpMsg)
-	if !strings.Contains(c.Help(), globalHelpMsg) {
-		t.Errorf("Expected final help message to contain \"%s\"", globalHelpMsg)
-	}
+	c := createTestAssignUserGroupsCommand(testHelpMessage)
+	testCommandHelp(t, c.Help())
 }
 
 func TestAssignUserGroupsCommand_ParseArgs(t *testing.T) {

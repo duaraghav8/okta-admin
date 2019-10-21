@@ -39,6 +39,7 @@ These commands demonstrate the different ways in which you can specify `groups` 
 
 3. List Groups present in the organization
 ```bash
+# Load credentials from an environment file
 source ~/.okta/creds.env
 
 # List names of all groups
@@ -48,10 +49,23 @@ okta-admin list-groups
 okta-admin list-groups -groups azkaban,durmstrang -detailed
 ```
 
-## Developing
-After cloning this repository, run `make bootstrap` to download tools necessary for developing. This project uses [Go Modules](https://blog.golang.org/using-go-modules) for dependency management.
+## Building
+After cloning this repository, run `make bootstrap` to download tools necessary for developing. This project uses [Go Modules](https://blog.golang.org/using-go-modules) for dependency management. You must have Go v1.13 or higher installed on your system.
 
-Use `make test` to run tests and `make fmt` to run `gofmt` over the codebase. Finally, run `make build` to build binaries for distribution.
+Run the make tasks:
+```
+make fmt
+make test
+
+# Linux
+make linux/amd64
+
+# Darwin
+make darwin/amd64
+
+# Windows
+make windows/amd64
+```
 
 ## License
 This code is licensed under the MPLv2 license.
