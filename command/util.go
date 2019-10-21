@@ -5,10 +5,10 @@ import (
 	"text/template"
 )
 
-// PrepareMessage interpolates data into a complex string
-// and makes it more polished. It abstracts away the
-// nuances of templating from its users.
-func PrepareMessage(msg string, filler map[string]interface{}) (string, error) {
+// FillTemplateMessage interpolates data into a complex string
+// and makes it more polished. It abstracts away the nuances
+// of templating from its users.
+func FillTemplateMessage(msg string, filler map[string]interface{}) (string, error) {
 	builder := &strings.Builder{}
 	tpl := template.Must(template.New("").Parse(msg))
 

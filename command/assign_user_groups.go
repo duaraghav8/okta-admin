@@ -23,9 +23,8 @@ func (c *AssignUserGroupsCommand) Help() string {
 Usage: okta-admin assign-groups [options]
 
   Adds an organization member to one or more groups.
-  This assumes that the specified group(s) already exist
-  in the organization. If no groups are specified, this
-  subcommand does nothing.
+  This command assumes that the specified group(s) already exist
+  in the organization. If no groups are specified, it does nothing.
 {{.GlobalOptionsHelpText}}
 Options:
 
@@ -52,7 +51,7 @@ func (c *AssignUserGroupsCommand) ParseArgs(args []string) (*AssignUserGroupsCom
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	cfg.GroupNames = GetGroupNames(groupNames, GroupNameSep)
+	cfg.GroupNames = c.parseListOfValues(groupNames, GroupNameSep)
 
 	return &cfg, c.Command.requiredArgs(map[string]string{
 		"email":     cfg.EmailID,

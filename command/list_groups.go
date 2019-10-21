@@ -24,8 +24,8 @@ func (c *ListGroupsCommand) Help() string {
 Usage: okta-admin list-groups [options]
 
   Lists existing groups in the organization.
-  If no arguments are specified, this subcommand lists the
-  names of all groups.
+  If no arguments are specified, this command lists the names
+  of all groups.
 {{.GlobalOptionsHelpText}}
 Options:
 
@@ -56,7 +56,7 @@ func (c *ListGroupsCommand) ParseArgs(args []string) (*ListGroupsCommandConfig, 
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	cfg.GroupNames = GetGroupNames(groupNames, GroupNameSep)
+	cfg.GroupNames = c.parseListOfValues(groupNames, GroupNameSep)
 
 	return &cfg, c.Command.requiredArgs(map[string]string{
 		"org url":   c.Meta.GlobalOptions.OrgUrl,

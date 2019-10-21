@@ -4,7 +4,6 @@ import (
 	oktaapi "github.com/duaraghav8/okta-admin/okta"
 	"github.com/okta/okta-sdk-golang/okta"
 	"github.com/okta/okta-sdk-golang/okta/query"
-	"strings"
 )
 
 // listGroupsResult contains the result of an async HTTP request
@@ -53,25 +52,6 @@ func FilterGroups(groups OktaGroups, eval FilterGroupsEvalFunc) OktaGroups {
 	return res
 }
 
-// SanitizeGroupNames takes raw user-supplied group names
-// as input and prepares them for further processing.
-func SanitizeGroupNames(names []string) []string {
-	n := make([]string, len(names), len(names))
-	for i := 0; i < len(names); i++ {
-		n[i] = strings.TrimSpace(names[i])
-	}
-	return n
-}
-
-// GetGroupNames takes a list of group names as a raw string
-// and returns a structured list of the same.
-func GetGroupNames(rawInput, sep string) []string {
-	if strings.TrimSpace(rawInput) == "" {
-		return []string{}
-	}
-	return SanitizeGroupNames(strings.Split(rawInput, sep))
-}
-
 // GetGroupDetailsPretty returns a pretty string describing
 // the group passed to it.
 func GetGroupDetailsPretty(g *okta.Group) string {
@@ -85,7 +65,7 @@ Links
   Apps:  {{.LinkApps}}
 `
 
-	res, _ := PrepareMessage(tpl, map[string]interface{}{
+	res, _ := FillTemplateMessage(tpl, map[string]interface{}{
 		"Id":          g.Id,
 		"Name":        g.Profile.Name,
 		"LinkUsers":   getLinkFromGroup(g, "users"),

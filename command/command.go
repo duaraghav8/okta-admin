@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/okta/okta-sdk-golang/okta"
 	"log"
+	"strings"
 )
 
 // Config contains options that are made available
@@ -71,9 +72,26 @@ func (c *Command) requiredArgs(args map[string]string) error {
 }
 
 func (c *Command) prepareHelpMessage(helpText string, filler map[string]interface{}) string {
-	res, err := PrepareMessage(helpText, filler)
+	res, err := FillTemplateMessage(helpText, filler)
 	if err != nil {
 		return fmt.Sprintf("Failed to render help message: %v\n", err)
 	}
+	return res
+}
+
+// parseListOfValues takes a raw string containing multiple
+// values for a single commandline option and returns a list
+// of those individual values.
+func (c *Command) parseListOfValues(rawInput, sep string) []string {
+	if strings.TrimSpace(rawInput) == "" {
+		return []string{}
+	}
+
+	l := strings.Split(rawInput, sep)
+	res := make([]string, len(l), len(l))
+	for i := 0; i < len(l); i++ {
+		res[i] = strings.TrimSpace(l[i])
+	}
+
 	return res
 }

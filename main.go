@@ -45,7 +45,8 @@ func main() {
 				return &cmd.AssignUserGroupsCommand{Command: globalCommand}, nil
 			},
 		},
-		Args: os.Args[1:],
+		Args:       os.Args[1:],
+		HelpWriter: os.Stdout,
 	}
 
 	exitStatus, err := c.Run()
