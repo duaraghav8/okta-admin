@@ -18,9 +18,9 @@ func FillTemplateMessage(msg string, filler map[string]interface{}) (string, err
 	return strings.TrimSpace(builder.String()), nil
 }
 
-// FirstNonEmptyString returns the first non-empty string
+// Coalesce returns the first non-empty string
 // it encounters amongst the arguments supplied to the function.
-func FirstNonEmptyStr(args ...string) string {
+func Coalesce(args ...string) string {
 	for _, v := range args {
 		if v != "" {
 			return v

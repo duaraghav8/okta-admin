@@ -70,7 +70,7 @@ Links
 		"Name":        g.Profile.Name,
 		"LinkUsers":   getLinkFromGroup(g, "users"),
 		"LinkApps":    getLinkFromGroup(g, "apps"),
-		"Description": FirstNonEmptyStr(g.Profile.Description, "[None]"),
+		"Description": Coalesce(g.Profile.Description, "[None]"),
 	})
 	return res
 }
