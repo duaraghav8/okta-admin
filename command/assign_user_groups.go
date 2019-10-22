@@ -51,7 +51,7 @@ func (c *AssignUserGroupsCommand) ParseArgs(args []string) (*AssignUserGroupsCom
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	cfg.GroupNames = c.parseListOfValues(groupNames, GroupNameSep)
+	cfg.GroupNames = c.parseListOfValues(groupNames, ValueSep)
 
 	return &cfg, c.Command.requiredArgs(map[string]string{
 		"email":     cfg.EmailID,

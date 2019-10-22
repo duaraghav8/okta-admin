@@ -21,12 +21,8 @@ type addUserToGroupResult struct {
 }
 
 type NumberOfExistingGroups uint32
-type OktaGroups []*okta.Group
-type FilterGroupsEvalFunc func(group *okta.Group, i int) bool
 
-// GroupNameSep is the string by which the group name list
-// supplied as raw input is split into individual names.
-const GroupNameSep = ","
+type OktaGroups []*okta.Group
 
 // GetID returns the ID of the Group whose name is specified.
 // If the Group with that name doesn't exist, this function
@@ -39,6 +35,10 @@ func (groups OktaGroups) GetID(name string) string {
 	}
 	return ""
 }
+
+// FilterGroupEvalFunc defines the criteria based on which an
+// Okta group is filtered. See FilterGroups.
+type FilterGroupsEvalFunc func(group *okta.Group, i int) bool
 
 // FilterGroups filters Okta Groups based on a user-supplied
 // evaluation function.
@@ -53,7 +53,7 @@ func FilterGroups(groups OktaGroups, eval FilterGroupsEvalFunc) OktaGroups {
 }
 
 // GetGroupDetailsPretty returns a pretty string describing
-// the group passed to it.
+// the Okta group passed to it.
 func GetGroupDetailsPretty(g *okta.Group) string {
 	tpl := `
 Name:        {{.Name}}

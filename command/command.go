@@ -33,6 +33,10 @@ type Command struct {
 	oktaClient *okta.Client
 }
 
+// ValueSep is the string separating individual values in a
+// raw string.
+const ValueSep = ","
+
 // OktaClient returns an instance of Okta Client initialized
 // with organization-specific API credentials. This method
 // only creates the client the first time it is called.
