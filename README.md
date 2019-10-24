@@ -49,14 +49,27 @@ okta-admin list-groups
 okta-admin list-groups -groups azkaban,durmstrang -detailed
 ```
 
-## Building
-After cloning this repository, run `make bootstrap` to download tools necessary for developing. This project uses [Go Modules](https://blog.golang.org/using-go-modules) for dependency management. You must have Go v1.13 or higher installed on your system.
+## Developing
+This project uses [Go Modules](https://blog.golang.org/using-go-modules) for dependency management. You must have Go v1.13 or higher installed on your system.
 
-Run the make tasks:
-```
+### Test
+```bash
 make fmt
 make test
+```
 
+### Dependencies
+Before sending a PR or building with your local changes, use `mod` to clean up dependencies.
+```bash
+# Install required dependencies & remove irrelevant ones
+go mod tidy
+# Add dependencies to vendor/
+go mod vendor
+```
+
+### Build
+To build the binary for your platform(s), run the following make tasks:
+```
 # Linux
 make linux/amd64
 
