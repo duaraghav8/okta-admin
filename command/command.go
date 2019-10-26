@@ -33,6 +33,14 @@ type Command struct {
 	oktaClient *okta.Client
 }
 
+// Parameter represents a commandline Parameter with full
+// context.
+type Parameter struct {
+	Required       bool
+	Name, Value    string
+	ValidationFunc func(value string) error
+}
+
 // ValueSep is the string separating individual values in a
 // raw string.
 const ValueSep = ","
@@ -62,19 +70,6 @@ func (c *Command) OktaClient() (*okta.Client, error) {
 	return client, err
 }
 
-// requiredArgs takes a series of arguments and returns an
-// error upon encountering the first empty argument.
-// This function ensures that all specified arguments are
-// non-empty.
-func (c *Command) requiredArgs(args map[string]string) error {
-	for k, v := range args {
-		if v == "" {
-			return errors.New(fmt.Sprintf("%s is a required argument", k))
-		}
-	}
-	return nil
-}
-
 func (c *Command) prepareHelpMessage(helpText string, filler map[string]interface{}) string {
 	res, err := FillTemplateMessage(helpText, filler)
 	if err != nil {
@@ -98,4 +93,21 @@ func (c *Command) parseListOfValues(rawInput, sep string) []string {
 	}
 
 	return res
+}
+
+func (c *Command) validateParameters(params ...*Parameter) error {
+	for _, p := range params {
+		// Return error if a required param is not set
+		if p.Required && p.Value == "" {
+			return errors.New(fmt.Sprintf("%s is a required argument", p.Name))
+		}
+		// If validation func is supplied and param is set,
+		// validate it.
+		if p.ValidationFunc != nil && p.Value != "" {
+			if err := p.ValidationFunc(p.Value); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }

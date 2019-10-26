@@ -1,6 +1,9 @@
 package command
 
 import (
+	"errors"
+	"net/url"
+	"regexp"
 	"strings"
 	"text/template"
 )
@@ -27,4 +30,21 @@ func Coalesce(args ...string) string {
 		}
 	}
 	return ""
+}
+
+// ValidateUrl returns an error if the Parameter supplied to it
+// is not a valid URL.
+func ValidateUrl(u string) error {
+	_, err := url.ParseRequestURI(u)
+	return err
+}
+
+// ValidateEmailID returns an error if the Parameter supplied to
+// it is not a valid Email ID.
+func ValidateEmailID(email string) error {
+	rxEmail := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+	if len(email) > 254 || !rxEmail.MatchString(email) {
+		return errors.New("invalid email id")
+	}
+	return nil
 }

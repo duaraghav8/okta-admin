@@ -46,11 +46,12 @@ func (c *DeactivateUserCommand) ParseArgs(args []string) (*DeactivateUserCommand
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	return &cfg, c.Command.requiredArgs(map[string]string{
-		"email":     cfg.EmailID,
-		"org url":   c.Meta.GlobalOptions.OrgUrl,
-		"api token": c.Meta.GlobalOptions.ApiToken,
-	})
+	err := c.Command.validateParameters(
+		&Parameter{Name: "api-token", Required: true, Value: c.Meta.GlobalOptions.ApiToken},
+		&Parameter{Name: "email", Required: true, Value: cfg.EmailID, ValidationFunc: ValidateEmailID},
+		&Parameter{Name: "org-url", Required: true, Value: c.Meta.GlobalOptions.OrgUrl, ValidationFunc: ValidateUrl},
+	)
+	return &cfg, err
 }
 
 func (c *DeactivateUserCommand) Run(args []string) int {

@@ -58,10 +58,11 @@ func (c *ListGroupsCommand) ParseArgs(args []string) (*ListGroupsCommandConfig, 
 	}
 	cfg.GroupNames = c.parseListOfValues(groupNames, ValueSep)
 
-	return &cfg, c.Command.requiredArgs(map[string]string{
-		"org url":   c.Meta.GlobalOptions.OrgUrl,
-		"api token": c.Meta.GlobalOptions.ApiToken,
-	})
+	err := c.Command.validateParameters(
+		&Parameter{Name: "api-token", Required: true, Value: c.Meta.GlobalOptions.ApiToken},
+		&Parameter{Name: "org-url", Required: true, Value: c.Meta.GlobalOptions.OrgUrl, ValidationFunc: ValidateUrl},
+	)
+	return &cfg, err
 }
 
 func (c *ListGroupsCommand) Run(args []string) int {
