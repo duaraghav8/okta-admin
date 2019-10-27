@@ -3,8 +3,10 @@ This is a Commandline application to perform administrative tasks in [Okta](http
 
 It does not allow you to make requests to arbitrary endpoints of the Okta API. Rather, it is designed to speed up frequently performed administrative tasks like creating users, adding them to groups, listing resources and so forth.
 
+## Installation
+Download the pre-compiled binary for your platform from the [Releases](https://github.com/duaraghav8/okta-admin/releases) page or use `make` to compile the code yourself (see [Developing](#developing)). Move the binary to an appropriate directory on your system to make it available on the `PATH`.
+
 ## Usage
-Download the pre-compiled binary for your platform from the [Releases](https://github.com/duaraghav8/okta-admin/releases) page or compile the code for your platform using `make build`.
 
 Use `-help` to display the list of commands available and to get information about specific commands.
 
@@ -50,7 +52,7 @@ okta-admin list-groups -groups azkaban,durmstrang -detailed
 ```
 
 ## Developing
-This project uses [Go Modules](https://blog.golang.org/using-go-modules) for dependency management. You must have Go v1.13 or higher installed on your system.
+This project uses [Go Modules](https://blog.golang.org/using-go-modules) for dependency management. You must have at least Go version 1.11 installed on your system to develop this project.
 
 ### Test
 ```bash
