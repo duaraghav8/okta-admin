@@ -37,12 +37,12 @@ func (groups OktaGroups) GetID(name string) string {
 }
 
 // FilterGroupEvalFunc defines the criteria based on which an
-// Okta group is filtered. See FilterGroups.
+// Okta group is filtered. See filterGroups.
 type FilterGroupsEvalFunc func(group *okta.Group, i int) bool
 
-// FilterGroups filters Okta Groups based on a user-supplied
+// filterGroups filters Okta Groups based on a user-supplied
 // evaluation function.
-func FilterGroups(groups OktaGroups, eval FilterGroupsEvalFunc) OktaGroups {
+func filterGroups(groups OktaGroups, eval FilterGroupsEvalFunc) OktaGroups {
 	res := make(OktaGroups, 0, len(groups))
 	for i, g := range groups {
 		if eval(g, i) {

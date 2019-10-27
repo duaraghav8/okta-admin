@@ -99,7 +99,7 @@ func (c *Command) validateParameters(params ...*Parameter) error {
 	for _, p := range params {
 		// Return error if a required param is not set
 		if p.Required && p.Value == "" {
-			return errors.New(fmt.Sprintf("%s is a required argument", p.Name))
+			return errors.New(fmt.Sprintf("%s is required", p.Name))
 		}
 		// If validation func is supplied and param is set,
 		// validate it.

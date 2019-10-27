@@ -90,7 +90,7 @@ func (c *ListGroupsCommand) Run(args []string) int {
 
 	// Filter groups if names are supplied
 	if len(cfg.GroupNames) > 0 {
-		groups = FilterGroups(groups, func(g *okta.Group, i int) bool {
+		groups = filterGroups(groups, func(g *okta.Group, i int) bool {
 			for _, n := range cfg.GroupNames {
 				if g.Profile.Name == n {
 					return true

@@ -125,10 +125,10 @@ _sign:
 	@echo "And then upload the binaries in dist/!"
 .PHONY: _sign
 
-# test runs the test suite.
+# test runs the test suite with caching disabled
 test: fmtcheck
 	@echo "==> Testing ${NAME}"
-	@go test -v -timeout=300s -tags="${GOTAGS}" ${GOFILES} ${TESTARGS}
+	@go test -count=1 -v -timeout=300s -tags="${GOTAGS}" ${GOFILES} ${TESTARGS}
 .PHONY: test
 
 fmt:

@@ -33,7 +33,9 @@ func Coalesce(args ...string) string {
 }
 
 // ValidateUrl returns an error if the Parameter supplied to it
-// is not a valid URL.
+// is not a valid URL. Because this function is only a wrapper
+// around a standard library function, it doesn't need to be
+// tested.
 func ValidateUrl(u string) error {
 	_, err := url.ParseRequestURI(u)
 	return err
