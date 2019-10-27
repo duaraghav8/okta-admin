@@ -6,6 +6,22 @@ import (
 	"github.com/okta/okta-sdk-golang/okta/query"
 )
 
+type OktaGroups []*okta.Group
+
+// GetID returns the ID of the Group whose name is specified.
+// If the Group with that name doesn't exist, this method simply
+// returns an empty string.
+func (groups OktaGroups) GetID(name string) string {
+	for _, g := range groups {
+		if g.Profile.Name == name {
+			return g.Id
+		}
+	}
+	return ""
+}
+
+type numberOfExistingGroups uint32
+
 // listGroupsResult contains the result of an async HTTP request
 // made to Okta API to fetch list of Groups.
 type listGroupsResult struct {
@@ -20,29 +36,13 @@ type addUserToGroupResult struct {
 	GroupName, GroupId string
 }
 
-type NumberOfExistingGroups uint32
-
-type OktaGroups []*okta.Group
-
-// GetID returns the ID of the Group whose name is specified.
-// If the Group with that name doesn't exist, this function
-// simply returns an empty string.
-func (groups OktaGroups) GetID(name string) string {
-	for _, g := range groups {
-		if g.Profile.Name == name {
-			return g.Id
-		}
-	}
-	return ""
-}
-
 // FilterGroupEvalFunc defines the criteria based on which an
 // Okta group is filtered. See filterGroups.
-type FilterGroupsEvalFunc func(group *okta.Group, i int) bool
+type filterGroupsEvalFunc func(group *okta.Group, i int) bool
 
 // filterGroups filters Okta Groups based on a user-supplied
 // evaluation function.
-func filterGroups(groups OktaGroups, eval FilterGroupsEvalFunc) OktaGroups {
+func filterGroups(groups OktaGroups, eval filterGroupsEvalFunc) OktaGroups {
 	res := make(OktaGroups, 0, len(groups))
 	for i, g := range groups {
 		if eval(g, i) {
@@ -52,9 +52,9 @@ func filterGroups(groups OktaGroups, eval FilterGroupsEvalFunc) OktaGroups {
 	return res
 }
 
-// GetGroupDetailsPretty returns a pretty string describing
-// the Okta group passed to it.
-func GetGroupDetailsPretty(g *okta.Group) string {
+// getDetailsPretty returns a pretty string describing the
+// Okta group passed to it.
+func getDetailsPretty(g *okta.Group) string {
 	tpl := `
 Name:        {{.Name}}
 ID:          {{.Id}}

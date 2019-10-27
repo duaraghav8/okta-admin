@@ -56,11 +56,11 @@ func (c *ListGroupsCommand) ParseArgs(args []string) (*ListGroupsCommandConfig, 
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	cfg.GroupNames = c.parseListOfValues(groupNames, ValueSep)
+	cfg.GroupNames = c.parseListOfValues(groupNames, ParamListSep)
 
 	err := c.Command.validateParameters(
-		&Parameter{Name: "api-token", Required: true, Value: c.Meta.GlobalOptions.ApiToken},
-		&Parameter{Name: "org-url", Required: true, Value: c.Meta.GlobalOptions.OrgUrl, ValidationFunc: ValidateUrl},
+		&parameter{Name: "api-token", Required: true, Value: c.Meta.GlobalOptions.ApiToken},
+		&parameter{Name: "org-url", Required: true, Value: c.Meta.GlobalOptions.OrgUrl, ValidationFunc: ValidateUrl},
 	)
 	return &cfg, err
 }
@@ -102,7 +102,7 @@ func (c *ListGroupsCommand) Run(args []string) int {
 
 	for _, g := range groups {
 		if cfg.Detailed {
-			c.Logger.Println(GetGroupDetailsPretty(g))
+			c.Logger.Println(getDetailsPretty(g))
 			c.Logger.Println(strings.Repeat("=", 75))
 		} else {
 			c.Logger.Println(g.Profile.Name)

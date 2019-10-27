@@ -77,7 +77,7 @@ func TestCommand_validateParameters(t *testing.T) {
 
 	t.Run("required and optional params", func(t *testing.T) {
 		t.Parallel()
-		param := &Parameter{Required: true, Name: "foobar", Value: "", ValidationFunc: nil}
+		param := &parameter{Required: true, Name: "foobar", Value: "", ValidationFunc: nil}
 
 		if err := cmd.validateParameters(param); err == nil {
 			t.Error("Expected param to be invalid as required field is not set")

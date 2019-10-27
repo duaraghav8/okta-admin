@@ -49,9 +49,9 @@ func (c *ResetUserMultifactorsCommand) ParseArgs(args []string) (*ResetUserMulti
 		return &cfg, err
 	}
 	err := c.Command.validateParameters(
-		&Parameter{Name: "api-token", Required: true, Value: c.Meta.GlobalOptions.ApiToken},
-		&Parameter{Name: "email", Required: true, Value: cfg.EmailID, ValidationFunc: ValidateEmailID},
-		&Parameter{Name: "org-url", Required: true, Value: c.Meta.GlobalOptions.OrgUrl, ValidationFunc: ValidateUrl},
+		&parameter{Name: "api-token", Required: true, Value: c.Meta.GlobalOptions.ApiToken},
+		&parameter{Name: "email", Required: true, Value: cfg.EmailID, ValidationFunc: ValidateEmailID},
+		&parameter{Name: "org-url", Required: true, Value: c.Meta.GlobalOptions.OrgUrl, ValidationFunc: ValidateUrl},
 	)
 	return &cfg, err
 }

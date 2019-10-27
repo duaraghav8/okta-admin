@@ -10,22 +10,6 @@ import (
 	"strings"
 )
 
-// Config contains options that are made available
-// to all actions. It is used to pass down global
-// configuration.
-type Config struct {
-	OrgUrl, ApiToken string
-}
-
-// Metadata is used to pass metadata to all actions.
-// This makes making structural changes in data passed
-// to commands easy.
-type Metadata struct {
-	FlagSet               *flag.FlagSet
-	GlobalOptions         *Config
-	GlobalOptionsHelpText string
-}
-
 // Command contains objects passed to all CLI commands
 type Command struct {
 	Meta       *Metadata
@@ -33,22 +17,38 @@ type Command struct {
 	oktaClient *okta.Client
 }
 
-// Parameter represents a commandline Parameter with full
+// Metadata contains data passed to all CLI commands
+type Metadata struct {
+	FlagSet               *flag.FlagSet
+	GlobalOptions         *Config
+	GlobalOptionsHelpText string
+}
+
+// Config contains cli options that are made available
+// to all commands. It is used to pass down global
+// configuration.
+type Config struct {
+	OrgUrl, ApiToken string
+}
+
+// parameter represents a commandline parameter with full
 // context.
-type Parameter struct {
+type parameter struct {
 	Required       bool
 	Name, Value    string
 	ValidationFunc func(value string) error
 }
 
-// ValueSep is the string separating individual values in a
-// raw string.
-const ValueSep = ","
+// ParamListSep is the string separating individual values in a
+// raw string representing a list of parameter values.
+const ParamListSep = ","
 
 // OktaClient returns an instance of Okta Client initialized
 // with organization-specific API credentials. This method
 // only creates the client the first time it is called.
 // Subsequent calls return the cached client.
+// This method should only be called after api credentials
+// have been populated in the metadata.
 func (c *Command) OktaClient() (*okta.Client, error) {
 	if c.oktaClient != nil {
 		return c.oktaClient, nil
@@ -95,7 +95,7 @@ func (c *Command) parseListOfValues(rawInput, sep string) []string {
 	return res
 }
 
-func (c *Command) validateParameters(params ...*Parameter) error {
+func (c *Command) validateParameters(params ...*parameter) error {
 	for _, p := range params {
 		// Return error if a required param is not set
 		if p.Required && p.Value == "" {

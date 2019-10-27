@@ -10,7 +10,7 @@ import (
 
 // FillTemplateMessage interpolates data into a complex string
 // and makes it more polished. It abstracts away the nuances
-// of templating from its users.
+// of templating from the user.
 func FillTemplateMessage(msg string, filler map[string]interface{}) (string, error) {
 	builder := &strings.Builder{}
 	tpl := template.Must(template.New("").Parse(msg))
@@ -32,7 +32,7 @@ func Coalesce(args ...string) string {
 	return ""
 }
 
-// ValidateUrl returns an error if the Parameter supplied to it
+// ValidateUrl returns an error if the parameter supplied to it
 // is not a valid URL. Because this function is only a wrapper
 // around a standard library function, it doesn't need to be
 // tested.
@@ -41,7 +41,7 @@ func ValidateUrl(u string) error {
 	return err
 }
 
-// ValidateEmailID returns an error if the Parameter supplied to
+// ValidateEmailID returns an error if the parameter supplied to
 // it is not a valid Email ID.
 func ValidateEmailID(email string) error {
 	rxEmail := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")

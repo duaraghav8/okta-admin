@@ -51,12 +51,12 @@ func (c *AssignUserGroupsCommand) ParseArgs(args []string) (*AssignUserGroupsCom
 	if err := flags.Parse(args); err != nil {
 		return &cfg, err
 	}
-	cfg.GroupNames = c.parseListOfValues(groupNames, ValueSep)
+	cfg.GroupNames = c.parseListOfValues(groupNames, ParamListSep)
 
 	err := c.Command.validateParameters(
-		&Parameter{Name: "api-token", Required: true, Value: c.Meta.GlobalOptions.ApiToken},
-		&Parameter{Name: "email", Required: true, Value: cfg.EmailID, ValidationFunc: ValidateEmailID},
-		&Parameter{Name: "org-url", Required: true, Value: c.Meta.GlobalOptions.OrgUrl, ValidationFunc: ValidateUrl},
+		&parameter{Name: "api-token", Required: true, Value: c.Meta.GlobalOptions.ApiToken},
+		&parameter{Name: "email", Required: true, Value: cfg.EmailID, ValidationFunc: ValidateEmailID},
+		&parameter{Name: "org-url", Required: true, Value: c.Meta.GlobalOptions.OrgUrl, ValidationFunc: ValidateUrl},
 	)
 	return &cfg, err
 }
@@ -70,7 +70,7 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 		listGroupsCh     = make(chan *listGroupsResult)
 		addUserToGroupCh = make(chan *addUserToGroupResult)
 	)
-	var neg NumberOfExistingGroups
+	var neg numberOfExistingGroups
 
 	cfg, err := c.ParseArgs(args)
 	if err != nil {
@@ -115,7 +115,7 @@ func (c *AssignUserGroupsCommand) Run(args []string) int {
 		}
 	}
 
-	neg = NumberOfExistingGroups(len(cfg.GroupNames))
+	neg = numberOfExistingGroups(len(cfg.GroupNames))
 	for _, n := range cfg.GroupNames {
 		gid := groups.GetID(n)
 		if gid == "" {
