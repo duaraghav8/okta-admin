@@ -44,6 +44,9 @@ func main() {
 			"assign-groups": func() (command cli.Command, err error) {
 				return &cmd.AssignUserGroupsCommand{Command: globalCommand}, nil
 			},
+			"webpage": func() (command cli.Command, err error) {
+				return &cmd.OpenWebpageCommand{Command: globalCommand}, nil
+			},
 		},
 		Args:       os.Args[1:],
 		HelpWriter: os.Stdout,
